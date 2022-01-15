@@ -8,10 +8,9 @@ const classSchema = new mongoose.Schema({
     },
     dept: {
         type: String,
-        enum: ['science', 'commercial', 'art'],
-        required: true
+        enum: ['science', 'commercial', 'art']
     },
-    class: {
+    class_name: {
         type: String,
         required: true
     },

@@ -10,6 +10,11 @@ const subjectSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Teacher'
         }
+    ],
+    class_offering_subject: [
+        {
+            type: String,
+        }
     ]
 }, {
     timestamps: true
