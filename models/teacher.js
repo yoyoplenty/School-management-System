@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-const studentSchema = new mongoose.Schema({
+
+const teacherSchema = new mongoose.Schema({
     firstname: {
         type: String,
         required: true
@@ -13,26 +14,23 @@ const studentSchema = new mongoose.Schema({
         type: String,
         enum: ['male', 'female']
     },
-    class_id: {
-        type: String,
-        required: true
-    },
     address: {
         type: String,
-        required: true
     },
-    parents_name: {
+    email: {
         type: String,
         required: true
     },
-    parents_phone: {
+    phone: {
+        type: String,
+        require: true
+    },
+    date_of_employment: {
         type: String,
         required: true
+
     },
-    registration_number: {
-        type: String,
-    },
-    admission_date: {
+    date_of_termination: {
         type: String,
         required: true
     }
@@ -40,10 +38,9 @@ const studentSchema = new mongoose.Schema({
     timestamps: true
 });
 
-
-studentSchema.virtual('fullname').get(function () {
+teacherSchema.virtual('fullname').get(function () {
     return `${this.firstname} ${this.lastname}`
 })
 
-const Student = mongoose.model('Student', studentSchema)
-module.exports = Student
+const Teacher = mongoose.model('Teacher', teacherSchema)
+module.exports = Teacher
