@@ -9,7 +9,7 @@ exports.authenticateToken = (req, res, next) => {
 
     jwt.verify(token, process.env.TOKEN_SECRET, (err, admin) => {
         console.log(err)
-        if (err) return res.sendStatus(403)
+        if (err) return res.status(403).json({ error: "Token Expired, Please Login" })
         req.admin = admin
         next()
     })

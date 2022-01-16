@@ -8,7 +8,7 @@ const classSchema = new mongoose.Schema({
     },
     dept: {
         type: String,
-        enum: ['science', 'commercial', 'art']
+        enum: ['science', 'commercial', 'art'],
     },
     class_name: {
         type: String,

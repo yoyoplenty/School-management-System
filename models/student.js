@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { required } = require('nodemon/lib/config');
 
 const studentSchema = new mongoose.Schema({
     firstname: {
@@ -11,7 +12,17 @@ const studentSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        enum: ['male', 'female']
+        enum: ['male', 'female'],
+        required: true
+    },
+    school_level: {
+        type: String,
+        enum: ['junior', 'senior'],
+        required: true
+    },
+    dept: {
+        type: String,
+        enum: ['science', 'commercial', 'art']
     },
     class_id: {
         type: String,
@@ -29,8 +40,9 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    registration_number: {
+    admission_number: {
         type: String,
+        required: true
     },
     admission_date: {
         type: String,

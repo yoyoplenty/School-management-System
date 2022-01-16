@@ -6,7 +6,7 @@ const { createStudent, createTeacher } = require('../config/usersvalidate')
 
 //Create Teacher
 router.post('/newteacher', authenticateToken, createTeacher, users.createTeacher)
-router.post('/newstudent', authenticateToken, createStudent, users.createStudent)
+router.post('/newstudent', /*authenticateToken,*/ createStudent, users.createStudent)
 
 
 module.exports = router

@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-
 exports.generateAccessToken = (admin) => {
     return jwt.sign(admin, process.env.TOKEN_SECRET, { expiresIn: '36000s' });
 }
@@ -15,9 +14,25 @@ exports.generateRandomCharacter = (length) => {
     }
     return result;
 }
-
-
-/* let noOfStudents = await Student.find({}).countDocuments()
+exports.number = async (model) => {
+    try {
+        let noOfStudents = await model.find({}).countDocuments()
         let inc = noOfStudents + 1
         let validNo = ('00' + inc).slice(-3)
-        let number = `${new Date().getFullYear()}/${validNo}` */
+        let number = `${new Date().getFullYear()}/${validNo}`
+        return number
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.validate = (school_level, dept, statement) => {
+    if (school_level == 'junior') { dept = null || undefined }
+    else {
+        if (dept == undefined || null) {
+            statement()
+            dept = req.body.dept
+        }
+    }
+    return dept
+}

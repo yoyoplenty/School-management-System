@@ -1,4 +1,5 @@
 const { body, oneOf, check } = require('express-validator');
+const Student = require('../models/student')
 
 const createTeacher = [
     check('firstname').notEmpty().withMessage("First name is required!"),
@@ -27,7 +28,7 @@ const createStudent = [
     check('parents_name').notEmpty().withMessage("Parent's name is required!"),
     check('parents_phone').notEmpty().withMessage("Mobile number is required!").isMobilePhone("any"),
     check('admission_date').notEmpty().withMessage("Date of Admission is required!"),
-    //check('admission_number').notEmpty().withMessage("Admission Number is required!"),
+    // check('admission_number').notEmpty()isLength({ min: 6 })..withMessage("Admission Number is required!"),
 ]
 
 module.exports = {
