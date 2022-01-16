@@ -13,7 +13,15 @@ const subjectSchema = new mongoose.Schema({
     ],
     class_offering_subject: [
         {
-            type: String,
+            school_level: {
+                type: String,
+                enum: ['junior', 'senior'],
+                required: true
+            },
+            dept: {
+                type: String,
+                enum: ['science', 'commercial', 'art'],
+            },
         }
     ]
 }, {
