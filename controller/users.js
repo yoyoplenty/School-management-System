@@ -1,5 +1,7 @@
 const Teacher = require('../models/teacher');
 const Student = require('../models/student');
+const Subject = require('../models/subjects');
+const Class = require('../models/class')
 const { number, validate } = require('../services/code');
 const { validationResult } = require('express-validator');
 
@@ -45,6 +47,66 @@ exports.createStudent = async (req, res) => {
         }
         const student = await Student.create(req.body)
         res.status(201).json({ student, success: `Student, ${student.fullname} Successfully Created` })
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.allTeachers = async (req, res) => {
+    try {
+        let allTeachers = await Teacher.find({})
+        res.status(200).json({ allTeachers })
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.eachTeacher = async (req, res) => {
+    try {
+        let eachTeacher = await Teacher.findById(req.query.id)
+        console.log(eachTeacher)
+        if (!eachTeacher) {
+            return res.status(400).json({ error: 'NO teacher with the ID provided' })
+        }
+        res.status(200).json(eachTeacher)
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.eachTeacherSubject = async (req, res) => {
+    try {
+        const teacherSubjects = await Subject.find({ subject_teacher: req.query.id })
+        if (!teacherSubjects) {
+            return res.status(400).json({ error: 'No Subject assigned to specified Teacher ID' })
+        }
+        let subject = teacherSubjects.map(x => x.subject_name)
+        res.status(200).json(subject)
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.classAssigned = async (req, res) => {
+    try {
+        const classAssigned = await Class.findOne({ class_teacher: req.query.id })
+        if (!classAssigned) {
+            return res.status(400).json({ error: 'No Class assigned to specified Teacher ID' })
+        }
+        res.status(200).json(classAssigned)
+    } catch (error) {
+        throw error
+    }
+}
+exports.deleteTeacher = async (req, res) => {
+    try {
+        let ID = req.query.id
+        let exactTeacher = await Teacher.findById(ID)
+        if (!exactTeacher) {
+            return res.status(400).send("Teacher with the specified ID not present")
+        }
+        await Teacher.findByIdAndDelete(ID);
+        res.status(200).send('Teacher Deleted successfully ')
     } catch (error) {
         throw error
     }
