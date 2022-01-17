@@ -1,7 +1,8 @@
 const Subject = require('../models/subjects');
 const Teacher = require('../models/teacher');
 const { validationResult } = require('express-validator');
-const { validate } = require('../services/code')
+const { validate } = require('../services/code');
+
 
 
 exports.createSubject = async (req, res) => {
@@ -67,5 +68,89 @@ exports.createSubjectTeachers = async (req, res) => {
         res.status(201).json({ subject, success: "Teacher Assigned to this Subject Successfully" })
     } catch (error) {
 
+    }
+}
+
+exports.allSubjects = async (req, res) => {
+    try {
+        let allSubjects = await Subject.find({})
+        let subject = allSubjects.map(x => x.subject_name)
+        res.status(200).json({ subject })
+    } catch (error) {
+        throw error
+    }
+};
+
+exports.allSubjectTeachers = async (req, res) => {
+    const { subject_name } = req.query
+    try {
+        const subjectTeachers = await Subject.find({ subject_name }).select('subject_name').populate('subject_teacher', `firstname lastname email phone`);
+        if (!subjectTeachers) {
+            return res.status(400).json({ error: "No Suubject Teacher for the Selected Subject" })
+        }
+        res.status(200).json(subjectTeachers)
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.eachLevelSubject = async (req, res) => {
+    const { school_level } = req.query
+    try {
+        const eachLevelSubject = await Subject.find({ class_offering_subject: { $elemMatch: { school_level: school_level } } })
+        if (!eachLevelSubject) {
+            res.status(400).json({ error: "No subject for the Selected level" })
+        }
+        let subject = eachLevelSubject.map(x => x.subject_name)
+        res.status(200).json(subject)
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.eachDeptSubject = async (req, res) => {
+    const { school_level, dept } = req.query
+    let newDept = validate(school_level, dept, () => {
+        return res.status(400).json({ error: "Department Cannot be undefined for Senior Level" })
+    })
+    try {
+        const eachDeptSubject = await Subject.find({ class_offering_subject: { $elemMatch: { school_level: school_level, dept: newDept } } })
+        if (!eachDeptSubject || eachDeptSubject.length < 1) {
+            return res.status(400).json({ error: "No subject for the Selected level & Department" })
+        }
+        let subject = eachDeptSubject.map(x => x.subject_name)
+        res.status(200).json(subject)
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.deleteSubject = async (req, res) => {
+    let ID = req.query.id
+    try {
+        let exactSubject = await Subject.findById(ID)
+        if (!exactSubject) {
+            return res.status(400).json({ error: "Subject with the specified ID not present" })
+        }
+        await Subject.findByIdAndDelete(ID);
+        res.status(200).json({ success: 'Subject Deleted successfully ' })
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.deleteSubjectTeacher = async (req, res) => {
+    const { subject_name, id } = req.query
+    try {
+        const subjectTeacher = await Subject.findOne({
+            $and: [{ subject_name }, { subject_teacher: id }]
+        });
+        if (!subjectTeacher) {
+            return res.status(400).json({ error: "Provided Teacher has not been assigned to the provided Subject Yet" })
+        }
+        await Subject.updateOne({ subject_name }, { $pull: { subject_teacher: id } });
+        res.status(200).json({ success: "Subject Teacher Deleted Successfully" })
+    } catch (error) {
+        throw error
     }
 }
