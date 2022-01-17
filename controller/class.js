@@ -45,3 +45,64 @@ exports.createClassTeacher = async (req, res) => {
         throw error
     }
 }
+
+exports.allClassTeacher = async (req, res) => {
+    try {
+        let allClassTeacher = await ClassTeacher.find({}).select('school_level , dept , class_name').populate('class_teacher', `firstname lastname email phone`)
+        let classteacher = allClassTeacher.map(x => x.class_teacher)
+        res.status(200).json({ allClassTeacher })
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.eachClassTeacher = async (req, res) => {
+    const { school_level, class_name, dept } = req.query
+    let newDept = validate(school_level, dept, () => {
+        return res.status(400).json({ error: "Department Cannot be undefined for Senior Level" })
+    })
+    try {
+        const classClassTeacher = await ClassTeacher.findOne({
+            $and: [{ school_level }, { dept: newDept }, { class_name }]
+        }).select('school_level , dept , class_name').populate('class_teacher', `firstname lastname email phone`)
+        if (!classClassTeacher) {
+            return res.status(400).json({ error: "Provided Class has not been assigned to a Teacher Yet" })
+        }
+        res.status(200).json({ classClassTeacher })
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.eachLevelClass = async (req, res) => {
+    const { school_level } = req.query
+    try {
+        const levelClassTeachers = await ClassTeacher.find({ school_level }).select('school_level , dept , class_name')
+            .populate('class_teacher', `firstname lastname email phone`);
+        if (!levelClassTeachers) {
+            return res.status(400).json({ error: "No Class Teacher Yet for the Provided Level" })
+        }
+        res.status(200).json({ levelClassTeachers })
+    } catch (error) {
+        throw error
+    }
+
+}
+
+exports.eachDeptClass = async (req, res) => {
+    const { school_level, dept } = req.query
+    let newDept = validate(school_level, dept, () => {
+        return res.status(400).json({ error: "Department Cannot be undefined for Senior Level" })
+    })
+    try {
+        const eachDeptClassTeacher = await ClassTeacher.find({
+            $and: [{ school_level }, { dept: newDept }]
+        }).select('school_level , dept , class_name').populate('class_teacher', `firstname lastname email phone`);
+        if (!eachDeptClassTeacher) {
+            return res.status(400).json({ error: "Provided School Level has not been assigned  a Class Teacher Yet" })
+        }
+        res.status(200).json({ eachDeptClassTeacher })
+    } catch (error) {
+        throw error
+    }
+}
