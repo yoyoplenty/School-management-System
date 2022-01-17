@@ -33,6 +33,8 @@ router.get('/eachdepartment', users.eachDept);
 router.get('eachclass', users.classStudent)
 //Edit  Student
 router.put('/editstudent', users.editStudent)
+//Delete Student
+router.delete('/deletestudent', users.deleteStudent)
 
 
 module.exports = router 

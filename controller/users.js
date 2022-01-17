@@ -6,6 +6,7 @@ const { number, validate } = require('../services/code');
 const { validationResult } = require('express-validator');
 
 
+
 exports.createTeacher = async (req, res) => {
     const result = validationResult(req)
     if (!result.isEmpty()) {
@@ -106,10 +107,10 @@ exports.deleteTeacher = async (req, res) => {
         let ID = req.query.id
         let exactTeacher = await Teacher.findById(ID)
         if (!exactTeacher) {
-            return res.status(400).send("Teacher with the specified ID not present")
+            return res.status(400).json({ error: "Teacher with the specified ID not present" })
         }
         await Teacher.findByIdAndDelete(ID);
-        res.status(200).send('Teacher Deleted successfully ')
+        res.status(200).json({ error: 'Teacher Deleted successfully ' })
     } catch (error) {
         throw error
     }
@@ -194,3 +195,18 @@ exports.editStudent = async (req, res) => {
         throw error
     }
 }
+
+exports.deleteStudent = async (req, res) => {
+    try {
+        let ID = req.query.id
+        let exactStudent = await Student.findById(ID)
+        if (!exactStudent) {
+            return res.status(400).json({ error: "Student with the specified ID not present" })
+        }
+        await Student.findByIdAndDelete(ID);
+        res.status(200).json({ success: 'Student Deleted successfully ' })
+    } catch (error) {
+        throw error
+    }
+}
+

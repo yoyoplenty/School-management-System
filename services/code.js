@@ -36,3 +36,4 @@ exports.validate = (school_level, dept, statement) => {
     }
     return dept
 }
+
