@@ -11,10 +11,13 @@ exports.createSubject = async (req, res) => {
         return res.status(400).json({ errors: error });
     }
     let { school_level, dept, subject_name } = req.body
+    let newDept = validate(school_level, dept, () => {
+        return res.status(400).json({ error: "Department Cannot be undefined for Senior Level" })
+    })
     try {
-        validate(school_level, dept, () => {
-            return res.status(400).json({ error: "Department Cannot be undefined for Senior Level" })
-        })
+        let body = req.body
+        body.dept = newDept
+        req.body = body
         let subjectPresent = await Subject.findOne({
             $and: [{ subject_name: subject_name },
             { class_offering_subject: { $elemMatch: { school_level: school_level, dept: dept } } }]

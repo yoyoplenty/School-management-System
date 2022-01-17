@@ -27,9 +27,9 @@ exports.number = async (model) => {
 }
 
 exports.validate = (school_level, dept, statement) => {
-    if (school_level == 'junior') { dept = null || undefined }
+    if (school_level == 'junior') { dept = undefined }
     else {
-        if (dept == undefined || null) {
+        if (dept == undefined) {
             statement()
             dept = req.body.dept
         }

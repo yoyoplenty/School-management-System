@@ -30,22 +30,24 @@ exports.createStudent = async (req, res) => {
         error = result.array()[0].msg
         return res.status(400).json({ errors: error });
     }
+    let { school_level, dept, class_id } = req.body
+    let newDept = validate(school_level, dept, () => {
+        return res.status(400).json({ error: "Department Cannot be undefined for Senior Level" })
+    })
     try {
-        let { school_level, dept, class_id } = req.body
         let body = req.body
         let admissionNumber = await number(Student);
         body.admission_number = admissionNumber
         req.body = body
-        validate(school_level, dept, () => {
-            return res.status(400).json({ error: "Department Cannot be undefined for Senior Level" })
-        })
+        body.dept = newDept
+        req.body = body
         const existingStudent = await Student.findOne({
-            $and: [{ school_level: school_level }, { dept: dept }, { class_id: class_id }]
+            $and: [{ school_level: school_level }, { dept: req.body.dept }, { class_id: class_id }]
         })
         if (existingStudent) {
             return res.status(400).json({ error: "Student Already Present" })
         }
-        const student = await Student.create(req.body)
+        let student = await Student.create(req.body)
         res.status(201).json({ student, success: `Student, ${student.fullname} Successfully Created` })
     } catch (error) {
         throw error
@@ -116,6 +118,7 @@ exports.deleteTeacher = async (req, res) => {
 exports.updateTeacher = async (req, res) => {
 
 }
+
 exports.allStudents = async (req, res) => {
     try {
         let allStudents = await Student.find({})
@@ -177,5 +180,17 @@ exports.classStudent = async (req, res) => {
 }
 
 exports.editStudent = async (req, res) => {
-
+    try {
+        const existingStudent = await Student.findById(req.query.id)
+        if (!existingStudent) {
+            return res.status(400).json({ error: 'NO Student with the ID provided' })
+        }
+        let editedStudent = await Student.findByIdAndUpdate(req.query.id, req.body)
+        if (!editedStudent) {
+            return res.status(400).json({ error: 'Nothing was Updated' })
+        }
+        res.status(200).json({ editedStudent, success: "Student was Updated Successfully" })
+    } catch (error) {
+        throw error
+    }
 }
