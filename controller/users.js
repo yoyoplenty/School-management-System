@@ -98,6 +98,7 @@ exports.classAssigned = async (req, res) => {
         throw error
     }
 }
+
 exports.deleteTeacher = async (req, res) => {
     try {
         let ID = req.query.id
@@ -110,4 +111,71 @@ exports.deleteTeacher = async (req, res) => {
     } catch (error) {
         throw error
     }
+}
+
+exports.updateTeacher = async (req, res) => {
+
+}
+exports.allStudents = async (req, res) => {
+    try {
+        let allStudents = await Student.find({})
+        res.status(200).json({ allStudents })
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.eachStudent = async (req, res) => {
+    try {
+        let eachStudent = await Student.findById(req.query.id)
+        if (!eachStudent) {
+            return res.status(400).json({ error: 'NO Student with the ID provided' })
+        }
+        res.status(200).json(eachStudent)
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.eachLevelStudent = async (req, res) => {
+    try {
+        let { school_level } = req.query
+        let eachlevel = await Student.find({ school_level })
+        if (!eachlevel) {
+            return res.status(400).json({ error: 'No Student available with the provided Level' });
+        }
+        res.status(200).json(eachlevel)
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.eachDept = async (req, res) => {
+    try {
+        let { school_level, dept } = req.query
+        let eachDept = await Student.find({ school_level, dept })
+        if (!eachDept || eachDept.length < 1) {
+            return res.status(400).json({ error: 'No Student available with the provided Level & Department' });
+        }
+        res.status(200).json(eachDept)
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.classStudent = async (req, res) => {
+    try {
+        let { school_level, dept, class_name } = req.query
+        let eachclass = await Student.find({ school_level, dept, class_name })
+        if (!eachclass || eachclass.length < 1) {
+            return res.status(400).json({ error: 'No Student available with the provided Level, Department & Class' });
+        }
+        res.status(200).json(eachclass)
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.editStudent = async (req, res) => {
+
 }
