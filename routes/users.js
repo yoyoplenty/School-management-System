@@ -31,6 +31,8 @@ router.get('/eachlevel', users.eachLevelStudent);
 router.get('/eachdepartment', users.eachDept);
 //Get each Class Student
 router.get('eachclass', users.classStudent)
+//Edit  Student
+router.put('/editstudent', users.editStudent)
 
 
 module.exports = router 
