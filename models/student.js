@@ -25,7 +25,6 @@ const studentSchema = new mongoose.Schema({
     },
     class_name: {
         type: String,
-        uppercase: true,
         required: true
     },
     class_id: {

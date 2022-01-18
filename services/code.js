@@ -22,7 +22,7 @@ exports.number = async (model) => {
         let number = `${new Date().getFullYear()}/${validNo}`
         return number
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 

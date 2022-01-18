@@ -49,7 +49,7 @@ exports.confirmAdmin = async (req, res) => {
         admin.save()
         res.status(200).json({ success: "Registration Confirmation Successful, You can now login Successfully", admin })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -67,7 +67,7 @@ exports.loginAdmin = async (req, res) => {
         req.admin = token
         return res.status(200).json(token);
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -91,7 +91,7 @@ exports.forgetPassword = async (req, res) => {
         await Email.sendMail(admin.email, subject, emailBody);
         res.status(200).json({ "success": "Password reset Link sent successfully to your Email Address" })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -123,6 +123,6 @@ exports.newPassword = async (req, res) => {
             })
 
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }

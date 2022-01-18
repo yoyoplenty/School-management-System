@@ -21,7 +21,7 @@ exports.createTeacher = async (req, res) => {
         const teacher = await Teacher.create(req.body)
         res.status(201).json({ teacher, success: `New Teacher ${teacher.fullname} was successfully created` })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -51,7 +51,7 @@ exports.createStudent = async (req, res) => {
         let student = await Student.create(req.body)
         res.status(201).json({ student, success: `Student, ${student.fullname} Successfully Created` })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -72,7 +72,7 @@ exports.eachTeacherSubject = async (req, res) => {
         let subject = teacherSubjects.map(x => x.subject_name)
         res.status(200).json(subject)
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -84,7 +84,7 @@ exports.classAssigned = async (req, res) => {
         }
         res.status(200).json(classAssigned)
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -113,7 +113,7 @@ exports.eachLevelStudent = async (req, res) => {
         }
         res.status(200).json(eachlevel)
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -126,7 +126,7 @@ exports.eachDept = async (req, res) => {
         }
         res.status(200).json(eachDept)
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -139,7 +139,7 @@ exports.classStudent = async (req, res) => {
         }
         res.status(200).json(eachclass)
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 //Come Back to refactor this code here

@@ -3,7 +3,7 @@ exports.allData = async (model, req, res) => {
         let allDatas = await model.find({})
         res.status(200).json({ allDatas })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -15,7 +15,7 @@ exports.deleteData = async (ID, model, req, res, data) => {
         }
         res.status(200).json({ error: `${data} Deleted successfully ` })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -31,7 +31,7 @@ exports.eachData = async (ID, model, req, res, data) => {
         }
         res.status(200).json(eachData)
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -43,6 +43,6 @@ exports.editUser = async (ID, model, req, res, data) => {
         }
         res.status(200).json({ editedUser, success: `${data} was Updated Successfully` })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }

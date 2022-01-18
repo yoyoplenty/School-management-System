@@ -43,9 +43,10 @@ exports.createClassTeacher = async (req, res) => {
                 res.status(400).json({ error: "Unable to save" })
             })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
+
 
 exports.allClassTeacher = async (req, res) => {
     try {
@@ -53,7 +54,7 @@ exports.allClassTeacher = async (req, res) => {
         let classteacher = allClassTeacher.map(x => x.class_teacher)
         res.status(200).json({ allClassTeacher })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -71,7 +72,7 @@ exports.eachClassTeacher = async (req, res) => {
         }
         res.status(200).json({ classClassTeacher })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -85,7 +86,7 @@ exports.eachLevelClass = async (req, res) => {
         }
         res.status(200).json({ levelClassTeachers })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 
 }
@@ -104,7 +105,7 @@ exports.eachDeptClass = async (req, res) => {
         }
         res.status(200).json({ eachDeptClassTeacher })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }
 
@@ -140,6 +141,6 @@ exports.editClassTeacher = async (req, res) => {
         }
         res.status(201).json({ "success": updatedClassTeacher })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: "interal server error" })
     }
 }

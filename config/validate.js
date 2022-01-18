@@ -1,4 +1,4 @@
-const { oneOf, check } = require('express-validator');
+const { oneOf, check, query } = require('express-validator');
 
 const createSubject = [
     check('subject_name').notEmpty().withMessage("Subject name is required!"),
@@ -21,6 +21,13 @@ const createClassTeacher = [
     check('class_name').notEmpty().withMessage("Teacher ID is required!")
         .isLength({ min: 4, max: 4 }).withMessage("Teachers ID should be 4 Characters long"),
 ]
+
+const IdValidation = [
+    query('id').notEmpty().withMessage("ID is required!").
+        isLength({ min: 24, max: 24 }).withMessage("ID should be 24 Characters long"),
+]
+
+
 
 
 module.exports = {
