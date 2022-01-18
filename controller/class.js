@@ -99,9 +99,11 @@ exports.eachDeptClass = async (req, res) => {
     try {
         const eachDeptClassTeacher = await ClassTeacher.find({
             $and: [{ school_level }, { dept: newDept }]
-        }).select('school_level , dept , class_name').populate('class_teacher', `firstname lastname email phone`);
+        }).select('school_level , dept , class_name')
+            .populate('class_teacher', `firstname lastname email phone`);
         if (!eachDeptClassTeacher) {
-            return res.status(400).json({ error: "Provided School Level has not been assigned  a Class Teacher Yet" })
+            return res.status(400)
+                .json({ error: "Provided School Level has not been assigned  a Class Teacher Yet" })
         }
         res.status(200).json({ eachDeptClassTeacher })
     } catch (error) {

@@ -175,9 +175,9 @@ exports.editStudent = async (req, res) => {
         //Updated
         updatedStudent = await newStudent.save();
         if (!updatedStudent) {
-            return res.status(200).json({ error })
+            return res.status(200).json({ error: "Unable to Update Student" })
         }
-        res.status(201).json({ "success": updatedStudent })
+        res.status(201).json({ "success": "Successfully Updated", updatedStudent })
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" })
     }
