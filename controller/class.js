@@ -42,7 +42,7 @@ exports.createClassTeacher = async (req, res) => {
                 res.status(400).json({ error: "Unable to save" })
             })
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
@@ -52,7 +52,7 @@ exports.allClassTeacher = async (req, res) => {
         let classteacher = allClassTeacher.map(x => x.class_teacher)
         res.status(200).json({ allClassTeacher })
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
@@ -70,7 +70,7 @@ exports.eachClassTeacher = async (req, res) => {
         }
         res.status(200).json({ classClassTeacher })
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
@@ -84,7 +84,7 @@ exports.eachLevelClass = async (req, res) => {
         }
         res.status(200).json({ levelClassTeachers })
     } catch (error) {
-        throw error
+        console.log(error)
     }
 
 }
@@ -103,7 +103,7 @@ exports.eachDeptClass = async (req, res) => {
         }
         res.status(200).json({ eachDeptClassTeacher })
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
@@ -117,7 +117,7 @@ exports.deleteClassTeacher = async (req, res) => {
         await ClassTeacher.findByIdAndDelete(ID);
         res.status(200).json({ success: 'Class Teacher Deleted successfully ' })
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
@@ -149,6 +149,6 @@ exports.editClassTeacher = async (req, res) => {
         }
         res.status(201).json({ "success": updatedClassTeacher })
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }

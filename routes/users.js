@@ -15,7 +15,7 @@ router.get('/teachersubject', users.eachTeacherSubject);
 //Get Class teacher was assigned To
 router.get('/classassigned', users.classAssigned);
 //Edit Teacher
-router.put('/editteacher', users.editTeacher)
+router.put('/editteacher', createTeacher, users.editTeacher)
 //Delete Teacher
 router.delete('/deleteteacher', users.deleteTeacher);
 
@@ -34,7 +34,7 @@ router.get('/eachdepartment', users.eachDept);
 //Get each Class Student
 router.get('eachclass', users.classStudent)
 //Edit  Student
-router.put('/editstudent', users.editStudent)
+router.put('/editstudent', createStudent, users.editStudent)
 //Delete Student
 router.delete('/deletestudent', users.deleteStudent)
 

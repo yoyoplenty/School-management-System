@@ -38,7 +38,7 @@ exports.createSubject = async (req, res) => {
             { upsert: true })
         res.status(201).json({ subject, success: "Subject assigned Successfully" })
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
@@ -77,7 +77,7 @@ exports.allSubjects = async (req, res) => {
         let subject = allSubjects.map(x => x.subject_name)
         res.status(200).json({ subject })
     } catch (error) {
-        throw error
+        console.log(error)
     }
 };
 
@@ -90,7 +90,7 @@ exports.allSubjectTeachers = async (req, res) => {
         }
         res.status(200).json(subjectTeachers)
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
@@ -104,7 +104,7 @@ exports.eachLevelSubject = async (req, res) => {
         let subject = eachLevelSubject.map(x => x.subject_name)
         res.status(200).json(subject)
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
@@ -121,7 +121,7 @@ exports.eachDeptSubject = async (req, res) => {
         let subject = eachDeptSubject.map(x => x.subject_name)
         res.status(200).json(subject)
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
@@ -135,7 +135,7 @@ exports.deleteSubject = async (req, res) => {
         await Subject.findByIdAndDelete(ID);
         res.status(200).json({ success: 'Subject Deleted successfully ' })
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
@@ -151,6 +151,6 @@ exports.deleteSubjectTeacher = async (req, res) => {
         await Subject.updateOne({ subject_name }, { $pull: { subject_teacher: id } });
         res.status(200).json({ success: "Subject Teacher Deleted Successfully" })
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }

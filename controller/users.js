@@ -3,6 +3,7 @@ const Student = require('../models/student');
 const Subject = require('../models/subjects');
 const Class = require('../models/class')
 const { number, validate } = require('../services/code');
+const { allUser, deleteUser, eachUser, editUser } = require('../middleware/fn');
 const { validationResult } = require('express-validator');
 
 
@@ -20,7 +21,7 @@ exports.createTeacher = async (req, res) => {
         const teacher = await Teacher.create(req.body)
         res.status(201).json({ teacher, success: `New Teacher ${teacher.fullname} was successfully created` })
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
@@ -50,30 +51,16 @@ exports.createStudent = async (req, res) => {
         let student = await Student.create(req.body)
         res.status(201).json({ student, success: `Student, ${student.fullname} Successfully Created` })
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
 exports.allTeachers = async (req, res) => {
-    try {
-        let allTeachers = await Teacher.find({})
-        res.status(200).json({ allTeachers })
-    } catch (error) {
-        throw error
-    }
+    await allUser(Teacher, req, res)
 }
 
 exports.eachTeacher = async (req, res) => {
-    try {
-        let eachTeacher = await Teacher.findById(req.query.id)
-        console.log(eachTeacher)
-        if (!eachTeacher) {
-            return res.status(400).json({ error: 'NO teacher with the ID provided' })
-        }
-        res.status(200).json(eachTeacher)
-    } catch (error) {
-        throw error
-    }
+    eachUser(req.query.id, Teacher, req, res, "Teacher")
 }
 
 exports.eachTeacherSubject = async (req, res) => {
@@ -85,7 +72,7 @@ exports.eachTeacherSubject = async (req, res) => {
         let subject = teacherSubjects.map(x => x.subject_name)
         res.status(200).json(subject)
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
@@ -97,35 +84,16 @@ exports.classAssigned = async (req, res) => {
         }
         res.status(200).json(classAssigned)
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
 exports.deleteTeacher = async (req, res) => {
-    try {
-        let ID = req.query.id
-        let exactTeacher = await Teacher.findById(ID)
-        if (!exactTeacher) {
-            return res.status(400).json({ error: "Teacher with the specified ID not present" })
-        }
-        await Teacher.findByIdAndDelete(ID);
-        res.status(200).json({ error: 'Teacher Deleted successfully ' })
-    } catch (error) {
-        throw error
-    }
+    await deleteUser(req.query.id, Teacher, req, res, "Teacher")
 }
 
 exports.editTeacher = async (req, res) => {
-    try {
-        const existingTeacher = await Teacher.findById(req.query.id)
-        if (!existingTeacher) {
-            return res.status(400).json({ error: 'NO Teacher with the ID provided' })
-        }
-        let editedTeacher = await Teacher.findByIdAndUpdate(req.query.id, req.body)
-        res.status(200).json({ editedTeacher, success: "Teacher was Updated Successfully" })
-    } catch (error) {
-        throw error
-    }
+    editUser(req.query.id, Teacher, req, res, "Teacher")
 }
 
 exports.allStudents = async (req, res) => {
@@ -133,20 +101,12 @@ exports.allStudents = async (req, res) => {
         let allStudents = await Student.find({})
         res.status(200).json({ allStudents })
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
 exports.eachStudent = async (req, res) => {
-    try {
-        let eachStudent = await Student.findById(req.query.id)
-        if (!eachStudent) {
-            return res.status(400).json({ error: 'NO Student with the ID provided' })
-        }
-        res.status(200).json(eachStudent)
-    } catch (error) {
-        throw error
-    }
+    eachUser(req.query.id, Student, req, res, "Student")
 }
 
 exports.eachLevelStudent = async (req, res) => {
@@ -158,7 +118,7 @@ exports.eachLevelStudent = async (req, res) => {
         }
         res.status(200).json(eachlevel)
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
@@ -171,7 +131,7 @@ exports.eachDept = async (req, res) => {
         }
         res.status(200).json(eachDept)
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
@@ -184,34 +144,15 @@ exports.classStudent = async (req, res) => {
         }
         res.status(200).json(eachclass)
     } catch (error) {
-        throw error
+        console.log(error)
     }
 }
 
 exports.editStudent = async (req, res) => {
-    try {
-        const existingStudent = await Student.findById(req.query.id)
-        if (!existingStudent) {
-            return res.status(400).json({ error: 'NO Student with the ID provided' })
-        }
-        let editedStudent = await Student.findByIdAndUpdate(req.query.id, req.body)
-        res.status(200).json({ editedStudent, success: "Student was Updated Successfully" })
-    } catch (error) {
-        throw error
-    }
+    editUser(req.query.id, Student, req, res, "Student")
 }
 
 exports.deleteStudent = async (req, res) => {
-    try {
-        let ID = req.query.id
-        let exactStudent = await Student.findById(ID)
-        if (!exactStudent) {
-            return res.status(400).json({ error: "Student with the specified ID not present" })
-        }
-        await Student.findByIdAndDelete(ID);
-        res.status(200).json({ success: 'Student Deleted successfully ' })
-    } catch (error) {
-        throw error
-    }
+    await deleteUser(req.query.id, Student, req, res, "Student")
 }
 

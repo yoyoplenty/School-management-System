@@ -27,6 +27,7 @@ const createStudent = [
         check('school_level').isIn(['junior', 'senior',]),
     ], "Invalid School level"),
     check('class_id').notEmpty().withMessage('Class identification number required').isLength({ min: 6, max: 6 }).withMessage("Class ID should be 6 Characters"),
+    check('class_name').notEmpty().withMessage('Class name is required').isLength({ min: 4, max: 4 }).withMessage("Class Name should be 4 Characters"),
     check('address').notEmpty().withMessage("Address is required!"),
     check('parents_name').notEmpty().withMessage("Parent's name is required!"),
     check('parents_phone').notEmpty().withMessage("Mobile number is required!").isMobilePhone("any"),
