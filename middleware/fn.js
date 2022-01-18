@@ -1,51 +1,47 @@
-exports.getbyMail = async (model, email) => {
-    return await model.findOne({ email })
-}
-
-exports.allUser = async (model, req, res) => {
+exports.allData = async (model, req, res) => {
     try {
-        let allUsers = await model.find({})
-        res.status(200).json({ allUsers })
+        let allDatas = await model.find({})
+        res.status(200).json({ allDatas })
     } catch (error) {
         console.log(error)
     }
 }
 
-exports.deleteUser = async (ID, model, req, res, user) => {
+exports.deleteData = async (ID, model, req, res, data) => {
     try {
         let exactUser = await model.findByIdAndDelete(ID);
         if (!exactUser) {
-            return res.status(400).json({ error: `${user} with the specified ID not present ` })
+            return res.status(400).json({ error: `${data} with the specified ID not present ` })
         }
-        res.status(200).json({ error: `${user} Deleted successfully ` })
+        res.status(200).json({ error: `${data} Deleted successfully ` })
     } catch (error) {
         console.log(error)
     }
 }
 
-exports.findEachUser = async (ID, model) => {
+exports.findEachData = async (ID, model) => {
     return await model.findById(ID)
 }
 
-exports.eachUser = async (ID, model, req, res, user) => {
+exports.eachData = async (ID, model, req, res, data) => {
     try {
-        let eachUser = await model.findById(ID)
-        if (!eachUser) {
-            return res.status(400).json({ error: `NO ${user} with the ID provided` })
+        let eachData = await model.findById(ID)
+        if (!eachData) {
+            return res.status(400).json({ error: `NO ${data} with the ID provided` })
         }
-        res.status(200).json(eachUser)
+        res.status(200).json(eachData)
     } catch (error) {
         console.log(error)
     }
 }
 
-exports.editUser = async (ID, model, req, res, user) => {
+exports.editUser = async (ID, model, req, res, data) => {
     try {
         let editedUser = await model.findByIdAndUpdate(ID, req.body)
         if (!editedUser) {
-            return res.status(400).json({ error: `NO ${user} with the ID provided ` })
+            return res.status(400).json({ error: `NO ${data} with the ID provided ` })
         }
-        res.status(200).json({ editedUser, success: `${user} was Updated Successfully` })
+        res.status(200).json({ editedUser, success: `${data} was Updated Successfully` })
     } catch (error) {
         console.log(error)
     }

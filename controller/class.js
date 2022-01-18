@@ -1,6 +1,7 @@
 const Teacher = require('../models/teacher');
 const ClassTeacher = require('../models/class');
 const { validationResult } = require('express-validator');
+const { deleteData } = require('../middleware/fn');
 const { validate } = require('../services/code');
 
 
@@ -108,17 +109,7 @@ exports.eachDeptClass = async (req, res) => {
 }
 
 exports.deleteClassTeacher = async (req, res) => {
-    const ID = req.query.id
-    try {
-        let exactClassTeacher = await ClassTeacher.findById(ID)
-        if (!exactClassTeacher) {
-            return res.status(400).json({ error: "Class Teacher with the specified ID not present" })
-        }
-        await ClassTeacher.findByIdAndDelete(ID);
-        res.status(200).json({ success: 'Class Teacher Deleted successfully ' })
-    } catch (error) {
-        console.log(error)
-    }
+    deleteData(req.query.id, ClassTeacher, req, res, "Class Teacher")
 }
 
 exports.editClassTeacher = async (req, res) => {

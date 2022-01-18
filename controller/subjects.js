@@ -1,6 +1,7 @@
 const Subject = require('../models/subjects');
 const Teacher = require('../models/teacher');
 const { validationResult } = require('express-validator');
+const { deleteData, eachData, } = require('../middleware/fn');
 const { validate } = require('../services/code');
 
 
@@ -81,6 +82,10 @@ exports.allSubjects = async (req, res) => {
     }
 };
 
+exports.eachSubject = async (req, res) => {
+    eachData(req.query.id, Subject, req, res, "Subject")
+}
+
 exports.allSubjectTeachers = async (req, res) => {
     const { subject_name } = req.query
     try {
@@ -126,17 +131,7 @@ exports.eachDeptSubject = async (req, res) => {
 }
 
 exports.deleteSubject = async (req, res) => {
-    let ID = req.query.id
-    try {
-        let exactSubject = await Subject.findById(ID)
-        if (!exactSubject) {
-            return res.status(400).json({ error: "Subject with the specified ID not present" })
-        }
-        await Subject.findByIdAndDelete(ID);
-        res.status(200).json({ success: 'Subject Deleted successfully ' })
-    } catch (error) {
-        console.log(error)
-    }
+    deleteData(req.query.id, Subject, req, res, "Subject")
 }
 
 exports.deleteSubjectTeacher = async (req, res) => {

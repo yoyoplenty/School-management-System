@@ -3,7 +3,7 @@ const Student = require('../models/student');
 const Subject = require('../models/subjects');
 const Class = require('../models/class')
 const { number, validate } = require('../services/code');
-const { allUser, deleteUser, eachUser, editUser } = require('../middleware/fn');
+const { allData, deleteData, eachData, editUser } = require('../middleware/fn');
 const { validationResult } = require('express-validator');
 
 
@@ -56,11 +56,11 @@ exports.createStudent = async (req, res) => {
 }
 
 exports.allTeachers = async (req, res) => {
-    await allUser(Teacher, req, res)
+    await allData(Teacher, req, res)
 }
 
 exports.eachTeacher = async (req, res) => {
-    eachUser(req.query.id, Teacher, req, res, "Teacher")
+    eachData(req.query.id, Teacher, req, res, "Teacher")
 }
 
 exports.eachTeacherSubject = async (req, res) => {
@@ -89,7 +89,7 @@ exports.classAssigned = async (req, res) => {
 }
 
 exports.deleteTeacher = async (req, res) => {
-    await deleteUser(req.query.id, Teacher, req, res, "Teacher")
+    await deleteData(req.query.id, Teacher, req, res, "Teacher")
 }
 
 exports.editTeacher = async (req, res) => {
@@ -97,16 +97,11 @@ exports.editTeacher = async (req, res) => {
 }
 
 exports.allStudents = async (req, res) => {
-    try {
-        let allStudents = await Student.find({})
-        res.status(200).json({ allStudents })
-    } catch (error) {
-        console.log(error)
-    }
+    await allData(Student, req, res)
 }
 
 exports.eachStudent = async (req, res) => {
-    eachUser(req.query.id, Student, req, res, "Student")
+    eachData(req.query.id, Student, req, res, "Student")
 }
 
 exports.eachLevelStudent = async (req, res) => {
@@ -147,12 +142,12 @@ exports.classStudent = async (req, res) => {
         console.log(error)
     }
 }
-
+//Come Back to refactor this code here
 exports.editStudent = async (req, res) => {
     editUser(req.query.id, Student, req, res, "Student")
 }
 
 exports.deleteStudent = async (req, res) => {
-    await deleteUser(req.query.id, Student, req, res, "Student")
+    await deleteData(req.query.id, Student, req, res, "Student")
 }
 
