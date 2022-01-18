@@ -172,12 +172,6 @@ exports.editStudent = async (req, res) => {
         newStudent.admission_date = req.body.admission_date
         newStudent.admission_number = addmissionNumber
         //Updated
-        const existingStudent = await Student.findOne({
-            $and: [{ school_level: school_level }, { dept: newDept }, { class_id: class_id }]
-        })
-        if (existingStudent) {
-            return res.status(400).json({ error: "Student Already Present" })
-        }
         updatedStudent = await newStudent.save();
         if (!updatedStudent) {
             return res.status(200).json({ error })
