@@ -126,7 +126,7 @@ exports.editClassTeacher = async (req, res) => {
         }
         const teacherPresent = await ClassTeacher.findOne({ class_teacher });
         if (teacherPresent) {
-            res.status(400).json({ error: "Teacher Already assigned, Please select a new teacher" })
+            return res.status(400).json({ error: "Teacher Already assigned, Please select a new teacher" })
         }
         let newClassTeacher = classteacher
         //Set Updated Variables
@@ -141,6 +141,6 @@ exports.editClassTeacher = async (req, res) => {
         }
         res.status(201).json({ "success": updatedClassTeacher })
     } catch (error) {
-        res.status(500).json({ error: "interal server error" })
+        res.status(500).json({ error })
     }
 }

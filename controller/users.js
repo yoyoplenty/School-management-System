@@ -142,9 +142,50 @@ exports.classStudent = async (req, res) => {
         res.status(500).json({ error: "interal server error" })
     }
 }
-//Come Back to refactor this code here
+
 exports.editStudent = async (req, res) => {
-    editUser(req.query.id, Student, req, res, "Student")
+    const ID = req.query.id
+    try {
+        let student = await Student.findById(ID)
+        if (!student) {
+            return res.status(400).json({ error: "Student with the Provided ID Doesn't exist" })
+        }
+        let { school_level, dept } = req.body
+        let newDept = validate(school_level, dept, () => {
+            return res.status(400).json({ error: "Department Cannot be undefined for Senior Level" })
+        });
+
+        const addmissionNumber = student.admission_number
+        let newStudent = student
+        //Set Updated Variable
+        newStudent.firstname = req.body.firstname
+        newStudent.lastname = req.body.lastname
+        newStudent.gender = req.body.gender
+        newStudent.school_level = req.body.school_level
+        newStudent.dept = newDept
+        newStudent.class_name = req.body.class_name
+        newStudent.class_id = req.body.class_id
+        newStudent.address = req.body.address
+        newStudent.parents_name = req.body.parents_name
+        newStudent.parents_phone = req.body.parents_phone
+        newStudent.admission_number = req.body.admission_number
+        newStudent.admission_date = req.body.admission_date
+        newStudent.admission_number = addmissionNumber
+        //Updated
+        const existingStudent = await Student.findOne({
+            $and: [{ school_level: school_level }, { dept: newDept }, { class_id: class_id }]
+        })
+        if (existingStudent) {
+            return res.status(400).json({ error: "Student Already Present" })
+        }
+        updatedStudent = await newStudent.save();
+        if (!updatedStudent) {
+            return res.status(200).json({ error })
+        }
+        res.status(201).json({ "success": updatedStudent })
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error" })
+    }
 }
 
 exports.deleteStudent = async (req, res) => {
