@@ -156,6 +156,7 @@ exports.editStudent = async (req, res) => {
         });
 
         const addmissionNumber = student.admission_number
+        const classID = student.class_id
         let newStudent = student
         //Set Updated Variable
         newStudent.firstname = req.body.firstname
@@ -164,7 +165,7 @@ exports.editStudent = async (req, res) => {
         newStudent.school_level = req.body.school_level
         newStudent.dept = newDept
         newStudent.class_name = req.body.class_name
-        newStudent.class_id = req.body.class_id
+        newStudent.class_id = classID
         newStudent.address = req.body.address
         newStudent.parents_name = req.body.parents_name
         newStudent.parents_phone = req.body.parents_phone
