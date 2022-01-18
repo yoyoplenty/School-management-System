@@ -6,13 +6,17 @@ const { createClassTeacher } = require('../config/validate')
 //Create Class Teacher
 router.post('/newclass', createClassTeacher, classteacher.createClassTeacher);
 //Get All class teachers
-router.get('/all', classteacher.allClassTeacher)
+router.get('/all', classteacher.allClassTeacher);
 //Get eat class Class teacher
-router.get('/eachclass', classteacher.eachClassTeacher)
+router.get('/eachclass', classteacher.eachClassTeacher);
 //Get each Level Class Teachers
-router.get('/eachlevelclass', classteacher.eachLevelClass)
+router.get('/eachlevelclass', classteacher.eachLevelClass);
 //GET Each department class Teachers
-router.get('/eachdept', classteacher.eachDeptClass)
+router.get('/eachdept', classteacher.eachDeptClass);
+//Delete Class Teacher
+router.delete('/deleteclass', classteacher.deleteClassTeacher);
+//Edit Class Teacher
+router.put('/editclass', classteacher.editClassTeacher)
 
 
 module.exports = router

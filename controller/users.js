@@ -6,7 +6,6 @@ const { number, validate } = require('../services/code');
 const { validationResult } = require('express-validator');
 
 
-
 exports.createTeacher = async (req, res) => {
     const result = validationResult(req)
     if (!result.isEmpty()) {
@@ -19,7 +18,7 @@ exports.createTeacher = async (req, res) => {
             return res.status(400).json({ error: "Teacher Already Present" })
         }
         const teacher = await Teacher.create(req.body)
-        res.status(201).json({ success: `New Teacher ${teacher.fullname} was successfully created` })
+        res.status(201).json({ teacher, success: `New Teacher ${teacher.fullname} was successfully created` })
     } catch (error) {
         throw error
     }
@@ -116,8 +115,17 @@ exports.deleteTeacher = async (req, res) => {
     }
 }
 
-exports.updateTeacher = async (req, res) => {
-
+exports.editTeacher = async (req, res) => {
+    try {
+        const existingTeacher = await Teacher.findById(req.query.id)
+        if (!existingTeacher) {
+            return res.status(400).json({ error: 'NO Teacher with the ID provided' })
+        }
+        let editedTeacher = await Teacher.findByIdAndUpdate(req.query.id, req.body)
+        res.status(200).json({ editedTeacher, success: "Teacher was Updated Successfully" })
+    } catch (error) {
+        throw error
+    }
 }
 
 exports.allStudents = async (req, res) => {
@@ -187,9 +195,6 @@ exports.editStudent = async (req, res) => {
             return res.status(400).json({ error: 'NO Student with the ID provided' })
         }
         let editedStudent = await Student.findByIdAndUpdate(req.query.id, req.body)
-        if (!editedStudent) {
-            return res.status(400).json({ error: 'Nothing was Updated' })
-        }
         res.status(200).json({ editedStudent, success: "Student was Updated Successfully" })
     } catch (error) {
         throw error

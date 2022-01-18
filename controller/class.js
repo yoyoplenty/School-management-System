@@ -106,3 +106,49 @@ exports.eachDeptClass = async (req, res) => {
         throw error
     }
 }
+
+exports.deleteClassTeacher = async (req, res) => {
+    const ID = req.query.id
+    try {
+        let exactClassTeacher = await ClassTeacher.findById(ID)
+        if (!exactClassTeacher) {
+            return res.status(400).json({ error: "Class Teacher with the specified ID not present" })
+        }
+        await ClassTeacher.findByIdAndDelete(ID);
+        res.status(200).json({ success: 'Class Teacher Deleted successfully ' })
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.editClassTeacher = async (req, res) => {
+    const ID = req.query.id
+    let { school_level, dept, class_name, class_teacher } = req.body
+    let newDept = validate(school_level, dept, () => {
+        return res.status(400).json({ error: "Department Cannot be undefined for Senior Level" })
+    })
+    try {
+        let classteacher = await ClassTeacher.findById(ID)
+        if (!classteacher) {
+            res.status(400).json({ error: "No Class Teacher Present" })
+        }
+        const teacherPresent = await ClassTeacher.findOne({ class_teacher });
+        if (teacherPresent) {
+            res.status(400).json({ error: "Teacher Already assigned, Please select a new teacher" })
+        }
+        let newClassTeacher = classteacher
+        //Set Updated Variables
+        newClassTeacher.school_level = school_level
+        newClassTeacher.dept = newDept
+        newClassTeacher.class_name = class_name
+        newClassTeacher.class_teacher = class_teacher
+        //Updated
+        updatedClassTeacher = await newClassTeacher.save();
+        if (!updatedClassTeacher) {
+            return res.status(200).json({ error: "Unable to Update Class Teacher" })
+        }
+        res.status(201).json({ "success": updatedClassTeacher })
+    } catch (error) {
+        throw error
+    }
+}

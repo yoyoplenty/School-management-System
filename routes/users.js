@@ -5,7 +5,7 @@ const { authenticateToken } = require('../middleware/auth')
 const { createStudent, createTeacher } = require('../config/usersvalidate');
 
 //Create Teacher
-router.post('/newteacher', authenticateToken, createTeacher, users.createTeacher)
+router.post('/newteacher', createTeacher, users.createTeacher)
 //Get all Teacher
 router.get('/allteachers', users.allTeachers);
 //Get Each Teacher
@@ -14,6 +14,8 @@ router.get('/eachteacher', users.eachTeacher);
 router.get('/teachersubject', users.eachTeacherSubject);
 //Get Class teacher was assigned To
 router.get('/classassigned', users.classAssigned);
+//Edit Teacher
+router.put('/editteacher', users.editTeacher)
 //Delete Teacher
 router.delete('/deleteteacher', users.deleteTeacher);
 
