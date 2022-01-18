@@ -12,6 +12,8 @@ router.post('/newsubjectteachers', createSubjectTeacher, subject.createSubjectTe
 router.get('/all', subject.allSubjects)
 //Get all Subject Teachers
 router.get('/allsubjectteachers', subject.allSubjectTeachers);
+//Each Subject
+router.get('/eachsubject', subject.eachSubject)
 //Get each level Subjects
 router.get('/eachlevelsubject', subject.eachLevelSubject);
 //Get each Department Subjects

@@ -20,11 +20,15 @@ exports.createSubject = async (req, res) => {
         let body = req.body
         body.dept = newDept
         req.body = body
-        let subjectPresent = await Subject.findOne({
+        let subjectPresentSenior = await Subject.findOne({
             $and: [{ subject_name: subject_name },
             { class_offering_subject: { $elemMatch: { school_level: school_level, dept: dept } } }]
         })
-        if (subjectPresent) {
+        let subjectPresentJunior = await Subject.findOne({
+            $and: [{ subject_name: subject_name },
+            { class_offering_subject: { $elemMatch: { school_level: school_level } } }]
+        })
+        if (subjectPresentSenior || subjectPresentJunior) {
             return res.status(400).json({ error: "Subjects to Department Already Assigned " })
         }
         let subject = await Subject.updateOne({ subject_name: req.body.subject_name }, {
