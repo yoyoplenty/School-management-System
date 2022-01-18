@@ -36,19 +36,19 @@ const loginValidation = [
                 }
             })
     }),
-    body("password").notEmpty().custom(async (value, { req }) => {
-        await Admin.findOne({ email: req.body.email })
-            .then(async admin => {
-                await bcrypt.compare(value, admin.password)
-                    .then(res => {
-                        if (res === false) {
-                            throw new Error("Incorrect password.")
-                        }
-                    })
-            })
-    })
+    body("password").notEmpty().isLength({ min: 5 }).withMessage('Password must be a minimum of 5 characters')
+        .custom(async (value, { req }) => {
+            await Admin.findOne({ email: req.body.email })
+                .then(async admin => {
+                    await bcrypt.compare(value, admin.password)
+                        .then(res => {
+                            if (res === false) {
+                                throw new Error("Incorrect password.")
+                            }
+                        })
+                })
+        })
 ]
-
 
 const forgotPasswordValidation = [
     check("email").notEmpty().custom(async (value) => {

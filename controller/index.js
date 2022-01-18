@@ -70,3 +70,59 @@ exports.loginAdmin = async (req, res) => {
         throw error
     }
 }
+
+exports.forgetPassword = async (req, res) => {
+    const result = validationResult(req)
+    if (!result.isEmpty()) {
+        error = result.array()[0].msg
+        return res.status(400).json({ errors: error });
+    }
+    let { email } = req.body
+    try {
+        const admin = await Admin.findOne({ email })
+        const reset_token = generateCode(20)
+        await Admin.updateOne({ email }, { reset_token });
+        //Send Email
+        let emailBody = `<h1>Email Confirmation, Passowrd Reset</h1><h2> Hello ${admin.fullname}</h2>
+        <p>Your Password Reset Link. Please confirm by clicking on the following link</p>
+        <a href=http://localhost:3001/reset/?reset_token=${reset_token}> Click here</a>
+        </div>`;
+        let subject = "Password Reset"
+        await Email.sendMail(admin.email, subject, emailBody);
+        res.status(200).json({ "success": "Password reset Link sent successfully to your Email Address" })
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.reset = async (req, res) => {
+    let { reset_token } = req.query
+    const admin = await Admin.findOne({ reset_token })
+    res.json(admin)
+}
+
+exports.newPassword = async (req, res) => {
+    const result = validationResult(req)
+    if (!result.isEmpty()) {
+        error = result.array()[0].msg
+        return res.status(400).json({ errors: error });
+    }
+    let { reset_token } = req.query
+    try {
+        const admin = await Admin.findOne({ reset_token })
+        if (!admin) {
+            return res.json({ error: 'Reset Token expired' })
+        }
+        admin.password = req.body.password
+        admin.save()
+            .then(async err => {
+                res.json({ 'success': 'Password reset successful' })
+                //  await PasswordReset.deleteOne({ _id: passwordReset._id })
+            }).catch(error => {
+                res.send('error', 'Failed to reset password please try again')
+            })
+
+    } catch (error) {
+        throw error
+    }
+}

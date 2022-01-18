@@ -30,6 +30,9 @@ const adminSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
+    reset_token: {
+        type: String
+    }
 }, {
     timestamps: true
 });
